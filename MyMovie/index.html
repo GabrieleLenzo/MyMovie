@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Movies</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <header class="topbar">
+    <h1 class="title">Movies</h1>
+    <button id="openModalBtn" class="btn btn--orange">Add movie</button>
+  </header>
+
+  <main class="container">
+    <section class="panel">
+      <h2 class="panel__title">Your movies</h2>
+      <p class="panel__sub">Aggiungi un film con immagine, recensione e rating.</p>
+      <div id="moviesGrid" class="grid"></div>
+    </section>
+  </main>
+
+  <!-- MODALE -->
+  <div id="modalOverlay" class="overlay hidden" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal__header">
+        <h2 id="modalTitle" class="modal__title">Add movie</h2>
+        <button id="closeModalBtn" class="iconBtn" aria-label="Close">✕</button>
+      </div>
+
+      <form id="movieForm" class="modal__body">
+        <label class="field">
+          <span class="field__label">Movie title</span>
+          <input id="movieTitle" class="field__input" type="text" required />
+        </label>
+
+        <label class="field">
+          <span class="field__label">Upload image</span>
+          <input id="movieFile" class="field__input" type="file" accept="image/*" required />
+        </label>
+
+        <label class="field">
+          <span class="field__label">Review</span>
+          <textarea id="movieReview" class="field__input field__textarea" rows="4" required></textarea>
+        </label>
+
+        <label class="field">
+          <span class="field__label">Your rating (1–5)</span>
+          <input id="movieRating" class="field__input" type="number" min="1" max="5" step="1" required />
+        </label>
+
+        <div class="modal__footer">
+          <button type="button" id="cancelBtn" class="btn btn--ghost">Cancel</button>
+          <button type="submit" class="btn btn--orange">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
