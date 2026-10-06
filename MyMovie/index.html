@@ -3,21 +3,43 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Movies</title>
+  <meta name="description" content="Il tuo diario personale dei film: immagine, recensione e voto." />
+  <meta name="color-scheme" content="light dark" />
+  <title>MyMovie</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
   <header class="topbar">
-    <h1 class="title">Movies</h1>
-    <button id="openModalBtn" class="btn btn--orange">Add movie</button>
+    <h1 class="title">🎬 MyMovie</h1>
+    <button id="openModalBtn" type="button" class="btn btn--orange">+ Aggiungi film</button>
   </header>
 
   <main class="container">
-    <section class="panel">
-      <h2 class="panel__title">Your movies</h2>
-      <p class="panel__sub">Aggiungi un film con immagine, recensione e rating.</p>
-      <div id="moviesGrid" class="grid"></div>
+    <section class="panel" aria-labelledby="panelTitle">
+      <div class="panel__head">
+        <div>
+          <h2 id="panelTitle" class="panel__title">I tuoi film <span id="movieCount" class="badge">0</span></h2>
+          <p class="panel__sub">Aggiungi un film con immagine, recensione e voto.</p>
+        </div>
+
+        <div class="toolbar">
+          <label class="visually-hidden" for="searchInput">Cerca film</label>
+          <input id="searchInput" class="field__input" type="search" placeholder="Cerca per titolo o recensione…" />
+
+          <label class="visually-hidden" for="sortSelect">Ordina per</label>
+          <select id="sortSelect" class="field__input">
+            <option value="newest">Più recenti</option>
+            <option value="oldest">Meno recenti</option>
+            <option value="rating-desc">Voto più alto</option>
+            <option value="rating-asc">Voto più basso</option>
+            <option value="title">Titolo (A–Z)</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="moviesGrid" class="grid" aria-live="polite"></div>
+      <p id="emptyState" class="empty hidden"></p>
     </section>
   </main>
 
@@ -25,38 +47,49 @@
   <div id="modalOverlay" class="overlay hidden" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
       <div class="modal__header">
-        <h2 id="modalTitle" class="modal__title">Add movie</h2>
-        <button id="closeModalBtn" class="iconBtn" aria-label="Close">✕</button>
+        <h2 id="modalTitle" class="modal__title">Aggiungi film</h2>
+        <button id="closeModalBtn" type="button" class="iconBtn" aria-label="Chiudi">✕</button>
       </div>
 
       <form id="movieForm" class="modal__body">
         <label class="field">
-          <span class="field__label">Movie title</span>
-          <input id="movieTitle" class="field__input" type="text" required />
+          <span class="field__label">Titolo del film</span>
+          <input id="movieTitle" class="field__input" type="text" maxlength="120" required />
         </label>
 
-        <label class="field">
-          <span class="field__label">Upload image</span>
+        <div class="field">
+          <label class="field__label" for="movieFile">Immagine</label>
           <input id="movieFile" class="field__input" type="file" accept="image/*" required />
-        </label>
+          <img id="imagePreview" class="preview hidden" alt="Anteprima immagine" />
+        </div>
 
         <label class="field">
-          <span class="field__label">Review</span>
-          <textarea id="movieReview" class="field__input field__textarea" rows="4" required></textarea>
+          <span class="field__label">Recensione</span>
+          <textarea id="movieReview" class="field__input field__textarea" rows="4" maxlength="1000" required></textarea>
         </label>
 
-        <label class="field">
-          <span class="field__label">Your rating (1–5)</span>
-          <input id="movieRating" class="field__input" type="number" min="1" max="5" step="1" required />
-        </label>
+        <fieldset class="field rating-field">
+          <legend class="field__label">Il tuo voto</legend>
+          <div class="rating-input" id="ratingInput">
+            <input type="radio" name="rating" id="r5" value="5" required /><label for="r5" title="5 stelle" aria-label="5 stelle">★</label>
+            <input type="radio" name="rating" id="r4" value="4" /><label for="r4" title="4 stelle" aria-label="4 stelle">★</label>
+            <input type="radio" name="rating" id="r3" value="3" /><label for="r3" title="3 stelle" aria-label="3 stelle">★</label>
+            <input type="radio" name="rating" id="r2" value="2" /><label for="r2" title="2 stelle" aria-label="2 stelle">★</label>
+            <input type="radio" name="rating" id="r1" value="1" /><label for="r1" title="1 stella" aria-label="1 stella">★</label>
+          </div>
+        </fieldset>
+
+        <p id="formError" class="form-error hidden" role="alert"></p>
 
         <div class="modal__footer">
-          <button type="button" id="cancelBtn" class="btn btn--ghost">Cancel</button>
-          <button type="submit" class="btn btn--orange">Save</button>
+          <button type="button" id="cancelBtn" class="btn btn--ghost">Annulla</button>
+          <button type="submit" class="btn btn--orange">Salva</button>
         </div>
       </form>
     </div>
   </div>
+
+  <div id="toast" class="toast hidden" role="status"></div>
 
   <script src="script.js"></script>
 </body>
